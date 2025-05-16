@@ -130,14 +130,14 @@ function renderCurrentQuestion() {
         let value = 1;
         userAnswers[currentQuestionIndex] = value;
         
-        // Обновляем состояние кнопки
-        updateCalculateButtonState();
-        
-        // Задержка перед переходом к следующему вопросу
+        // Задержка перед переходом к следующему вопросу или показу результата
         setTimeout(() => {
             if (currentQuestionIndex < currentTest.questions.length - 1) {
                 currentQuestionIndex++;
                 renderCurrentQuestion();
+            } else {
+                // Если это последний вопрос, сразу показываем результат
+                showTestResult();
             }
         }, 300);
     };
@@ -165,14 +165,14 @@ function renderCurrentQuestion() {
         let value = 0;
         userAnswers[currentQuestionIndex] = value;
         
-        // Обновляем состояние кнопки
-        updateCalculateButtonState();
-        
-        // Задержка перед переходом к следующему вопросу
+        // Задержка перед переходом к следующему вопросу или показу результата
         setTimeout(() => {
             if (currentQuestionIndex < currentTest.questions.length - 1) {
                 currentQuestionIndex++;
                 renderCurrentQuestion();
+            } else {
+                // Если это последний вопрос, сразу показываем результат
+                showTestResult();
             }
         }, 300);
     };
@@ -191,9 +191,9 @@ function renderCurrentQuestion() {
     // Очищаем и добавляем новый вопрос
     questionsContainer.innerHTML = '';
     questionsContainer.appendChild(questionDiv);
-
-    // Показываем кнопку подсчета результатов, если отвечены все вопросы или текущий вопрос - последний
-    updateCalculateButtonState();
+    
+    // Скрываем кнопку подсчета результатов
+    calculateResultButton.style.display = 'none';
 }
 
 // Функция для обновления состояния кнопки подсчета результатов
@@ -202,16 +202,24 @@ function updateCalculateButtonState() {
     const answeredQuestions = userAnswers.filter(answer => answer !== null).length;
     const totalQuestions = currentTest.questions.length;
     
-    // Показываем кнопку, если отвечен хотя бы один вопрос
-    calculateResultButton.disabled = answeredQuestions === 0;
-    calculateResultButton.classList.toggle('opacity-50', answeredQuestions === 0);
+    // Проверяем, является ли текущий вопрос последним
+    const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
     
-    // Обновляем текст кнопки в зависимости от количества отвеченных вопросов
-    if (answeredQuestions === totalQuestions) {
-        calculateResultButton.textContent = 'Посчитать результат';
+    // Показываем кнопку только на последнем вопросе
+    calculateResultButton.style.display = isLastQuestion ? 'block' : 'none';
+    
+    // На последнем вопросе кнопка всегда активна
+    if (isLastQuestion) {
+        calculateResultButton.disabled = false;
+        calculateResultButton.classList.remove('opacity-50');
+        calculateResultButton.classList.add('bg-brand-primary', 'hover:bg-brand-hover', 'shadow-md');
     } else {
-        calculateResultButton.textContent = `Посчитать результат (${answeredQuestions}/${totalQuestions})`;
+        calculateResultButton.disabled = true;
+        calculateResultButton.classList.add('opacity-50');
     }
+    
+    // Обновляем текст кнопки
+    calculateResultButton.textContent = 'Посчитать результат';
 }
 
 // Функция для отображения результата теста
@@ -235,7 +243,7 @@ function showTestResult() {
         );
         
         // Отображаем результат с пометкой о неполном прохождении
-        scoreElement.textContent = `${score} из ${totalAnswered} (отвечено ${totalAnswered} из ${totalQuestions} вопросов)`;
+        scoreElement.textContent = `Результат: ${score} баллов (пройдено ${totalAnswered} из ${totalQuestions} вопросов)`;
     } else {
         // Обычный расчет
         interpretation = currentTest.interpretations.find(
@@ -243,7 +251,7 @@ function showTestResult() {
         );
         
         // Отображаем результат
-        scoreElement.textContent = `${score} из ${totalAnswered}`;
+        scoreElement.textContent = `Результат: ${score} баллов`;
     }
 
     // Отображаем интерпретацию
