@@ -9,6 +9,7 @@ if (tg) {
 let currentTest = null;
 let currentQuestionIndex = 0;
 let userAnswers = [];
+let isButtonDisabled = false; // Добавляем переменную для отслеживания состояния кнопок
 
 // DOM-элементы
 const startScreen = document.getElementById('start-screen');
@@ -147,7 +148,11 @@ function renderCurrentQuestion() {
     
     // Обработчик клика на кнопку "Да"
     yesButton.onclick = function() {
-        // Визуально выделяем кнопку
+        // Предотвращаем двойные нажатия
+        if (isButtonDisabled) return;
+        isButtonDisabled = true;
+        
+        // Визуально выделяем кнопку только на текущем экране
         yesButton.className = 'py-3 px-8 bg-brand-primary text-white font-semibold rounded-lg shadow-md transform scale-105 transition-all';
         noButton.className = 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
         
@@ -156,6 +161,9 @@ function renderCurrentQuestion() {
         
         // Задержка перед переходом к следующему вопросу или показу результата
         setTimeout(() => {
+            // Удаляем текущий вопрос перед переходом к следующему
+            questionsContainer.innerHTML = '';
+            
             if (currentQuestionIndex < currentTest.questions.length - 1) {
                 currentQuestionIndex++;
                 renderCurrentQuestion();
@@ -163,6 +171,8 @@ function renderCurrentQuestion() {
                 // Если это последний вопрос, сразу показываем результат
                 showTestResult();
             }
+            // Сбрасываем блокировку кнопок для следующего вопроса
+            isButtonDisabled = false;
         }, 300);
     };
     
@@ -174,7 +184,11 @@ function renderCurrentQuestion() {
     
     // Обработчик клика на кнопку "Нет"
     noButton.onclick = function() {
-        // Визуально выделяем кнопку
+        // Предотвращаем двойные нажатия
+        if (isButtonDisabled) return;
+        isButtonDisabled = true;
+        
+        // Визуально выделяем кнопку только на текущем экране
         noButton.className = 'py-3 px-8 bg-brand-primary text-white font-semibold rounded-lg shadow-md transform scale-105 transition-all';
         yesButton.className = 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
         
@@ -183,6 +197,9 @@ function renderCurrentQuestion() {
         
         // Задержка перед переходом к следующему вопросу или показу результата
         setTimeout(() => {
+            // Удаляем текущий вопрос перед переходом к следующему
+            questionsContainer.innerHTML = '';
+            
             if (currentQuestionIndex < currentTest.questions.length - 1) {
                 currentQuestionIndex++;
                 renderCurrentQuestion();
@@ -190,6 +207,8 @@ function renderCurrentQuestion() {
                 // Если это последний вопрос, сразу показываем результат
                 showTestResult();
             }
+            // Сбрасываем блокировку кнопок для следующего вопроса
+            isButtonDisabled = false;
         }, 300);
     };
     
