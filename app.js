@@ -218,8 +218,16 @@ function renderCurrentQuestion() {
     questionDiv.appendChild(optionsDiv);
     
     // Очищаем и добавляем новый вопрос
-    questionsContainer.innerHTML = '';
-    questionsContainer.appendChild(questionDiv);
+    // Сбросим возможную подсветку с предыдущих кнопок
+yesButton.classList.remove('bg-brand-primary', 'text-white', 'transform', 'scale-105');
+yesButton.classList.add('bg-white', 'hover:bg-brand-primary', 'hover:text-white', 'text-brand-textPurple');
+
+noButton.classList.remove('bg-brand-primary', 'text-white', 'transform', 'scale-105');
+noButton.classList.add('bg-white', 'hover:bg-brand-primary', 'hover:text-white', 'text-brand-textPurple');
+
+// Очищаем и добавляем новый вопрос
+questionsContainer.innerHTML = '';
+questionsContainer.appendChild(questionDiv);
     
     // Скрываем кнопку подсчета результатов
     calculateResultButton.style.display = 'none';
