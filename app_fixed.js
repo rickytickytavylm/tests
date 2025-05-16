@@ -164,9 +164,6 @@ function renderCurrentQuestion() {
         
         // Задержка перед переходом к следующему вопросу или показу результата
         setTimeout(() => {
-            // Удаляем текущий вопрос перед переходом к следующему
-            questionsContainer.innerHTML = '';
-            
             if (currentQuestionIndex < currentTest.questions.length - 1) {
                 currentQuestionIndex++;
                 renderCurrentQuestion();
@@ -200,9 +197,6 @@ function renderCurrentQuestion() {
         
         // Задержка перед переходом к следующему вопросу или показу результата
         setTimeout(() => {
-            // Удаляем текущий вопрос перед переходом к следующему
-            questionsContainer.innerHTML = '';
-            
             if (currentQuestionIndex < currentTest.questions.length - 1) {
                 currentQuestionIndex++;
                 renderCurrentQuestion();
@@ -248,47 +242,54 @@ function updateCalculateButtonState() {
         calculateResultButton.disabled = true;
         calculateResultButton.classList.add('opacity-50');
     }
-    
-    // Обновляем текст кнопки
-    calculateResultButton.textContent = 'Посчитать результат';
 }
 
 // Функция для отображения результата теста
 function showTestResult() {
-    // Подсчитываем количество положительных ответов
-    // Учитываем только отвеченные вопросы
-    const answeredQuestions = userAnswers.filter(answer => answer !== null);
-    const score = answeredQuestions.reduce((total, answer) => total + answer, 0);
-    const totalAnswered = answeredQuestions.length;
-    const totalQuestions = currentTest.questions.length;
+    // Подсчитываем результат
+    const score = userAnswers.reduce((sum, answer) => sum + answer, 0);
     
-    // Находим соответствующую интерпретацию
-    let interpretation;
+    // Определяем интерпретацию результата
+    let interpretation = '';
     
-    // Если отвечены не все вопросы, но больше половины, пропорционально оцениваем результат
-    if (totalAnswered < totalQuestions && totalAnswered > totalQuestions / 2) {
-        // Пропорционально оцениваем скор
-        const estimatedScore = Math.round(score * (totalQuestions / totalAnswered));
-        interpretation = currentTest.interpretations.find(
-            interp => estimatedScore >= interp.min && estimatedScore <= interp.max
-        );
-        
-        // Отображаем результат - только количество баллов
-        scoreElement.textContent = `Результат: ${score} баллов`;
-    } else {
-        // Обычный расчет
-        interpretation = currentTest.interpretations.find(
-            interp => score >= interp.min && score <= interp.max
-        );
-        
-        // Отображаем результат - только количество баллов
-        scoreElement.textContent = `Результат: ${score} баллов`;
+    if (currentTest.title.includes('признаки созависимости')) {
+        if (score <= 5) {
+            interpretation = 'У вас низкий уровень созависимых паттернов. Вы, скорее всего, способны устанавливать здоровые границы в отношениях и заботиться о собственных потребностях.';
+        } else if (score <= 15) {
+            interpretation = 'У вас средний уровень созависимых паттернов. В некоторых ситуациях вы можете терять контакт с собственными потребностями, чрезмерно фокусируясь на других.';
+        } else {
+            interpretation = 'У вас высокий уровень созависимых паттернов. Вам может быть сложно отделить свои чувства и потребности от чувств и потребностей близких людей. Рекомендуем обратиться к специалисту.';
+        }
+    } else if (currentTest.title.includes('эмоционального выгорания')) {
+        if (score <= 7) {
+            interpretation = 'У вас низкий уровень эмоционального выгорания. Вы хорошо справляетесь со стрессом и сохраняете энергию.';
+        } else if (score <= 15) {
+            interpretation = 'У вас средний уровень эмоционального выгорания. Обратите внимание на свое состояние и найдите способы восстановления энергии.';
+        } else {
+            interpretation = 'У вас высокий уровень эмоционального выгорания. Рекомендуем обратиться к специалисту и внести изменения в свой образ жизни.';
+        }
+    } else if (currentTest.title.includes('уровень тревожности')) {
+        if (score <= 7) {
+            interpretation = 'У вас низкий уровень тревожности. Вы хорошо справляетесь с неопределенностью и стрессовыми ситуациями.';
+        } else if (score <= 15) {
+            interpretation = 'У вас средний уровень тревожности. В некоторых ситуациях вы можете испытывать беспокойство и напряжение.';
+        } else {
+            interpretation = 'У вас высокий уровень тревожности. Рекомендуем обратиться к специалисту для получения поддержки.';
+        }
+    } else if (currentTest.title.includes('устойчивость к стрессу')) {
+        if (score <= 7) {
+            interpretation = 'У вас низкая устойчивость к стрессу. Вам может быть сложно восстанавливаться после стрессовых ситуаций.';
+        } else if (score <= 15) {
+            interpretation = 'У вас средняя устойчивость к стрессу. Вы обладаете некоторыми навыками совладания со стрессом, но иногда они могут быть недостаточными.';
+        } else {
+            interpretation = 'У вас высокая устойчивость к стрессу. Вы хорошо справляетесь с трудностями и быстро восстанавливаетесь после стрессовых ситуаций.';
+        }
     }
-
-    // Отображаем интерпретацию
-    interpretationElement.textContent = interpretation ? interpretation.text : 
-        'Недостаточно данных для точной интерпретации. Пожалуйста, ответьте на большее количество вопросов.';
-
+    
+    // Отображаем результат
+    scoreElement.textContent = `${score} из ${currentTest.questions.length}`;
+    interpretationElement.textContent = interpretation;
+    
     // Переключаем экраны
     testScreen.classList.remove('active');
     testScreen.classList.add('hidden');
