@@ -92,43 +92,69 @@ function startTest(testId) {
 function renderCurrentQuestion() {
     // Обновляем индикатор прогресса
     const totalQuestions = currentTest.questions.length;
-    progressText.textContent = `Вопрос ${currentQuestionIndex + 1} из ${totalQuestions}`;
-    progressFill.style.width = `${((currentQuestionIndex + 1) / totalQuestions) * 100}%`;
+    const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
+    
+    // Специальное оформление для последнего вопроса
+    if (isLastQuestion) {
+        progressText.textContent = `Последний вопрос (${currentQuestionIndex + 1} из ${totalQuestions})`;
+        progressText.classList.add('font-bold', 'text-brand-textPurple');
+        progressFill.style.width = '100%';
+        progressFill.classList.add('bg-brand-hover');
+    } else {
+        progressText.textContent = `Вопрос ${currentQuestionIndex + 1} из ${totalQuestions}`;
+        progressText.classList.remove('font-bold', 'text-brand-textPurple');
+        progressFill.style.width = `${((currentQuestionIndex + 1) / totalQuestions) * 100}%`;
+        progressFill.classList.remove('bg-brand-hover');
+    }
 
     // Получаем текущий вопрос
     const question = currentTest.questions[currentQuestionIndex];
 
     // Создаем HTML для вопроса
     const questionDiv = document.createElement('div');
-    questionDiv.className = 'bg-white/80 rounded-xl p-5 shadow-md mb-4';
+    
+    // Специальное оформление для последнего вопроса
+    if (isLastQuestion) {
+        questionDiv.className = 'bg-white/90 rounded-xl p-5 shadow-lg mb-4 border-2 border-brand-primary';
+    } else {
+        questionDiv.className = 'bg-white/80 rounded-xl p-5 shadow-md mb-4';
+    }
     
     const questionText = document.createElement('p');
-    questionText.className = 'text-lg mb-4';
+    questionText.className = isLastQuestion ? 'text-lg mb-4 font-semibold' : 'text-lg mb-4';
     questionText.textContent = question.text;
     questionDiv.appendChild(questionText);
     
+    // Добавляем подсказку для последнего вопроса
+    if (isLastQuestion) {
+        const hintText = document.createElement('p');
+        hintText.className = 'text-sm text-brand-textPurple mb-4 italic';
+        hintText.textContent = 'После ответа на этот вопрос будет показан результат теста';
+        questionDiv.appendChild(hintText);
+    }
+    
     const optionsDiv = document.createElement('div');
-    optionsDiv.className = 'flex gap-6';
+    optionsDiv.className = 'flex gap-4 justify-center mt-6';
     
     // Для теста на устойчивость к стрессу инвертируем ответы (да = положительно)
     const isStressTest = currentTest.title.includes('устойчивость к стрессу');
     
-    // Создаем опцию "Да"
-    const yesLabel = document.createElement('label');
-    yesLabel.className = 'flex items-center cursor-pointer';
+    // Создаем кнопку "Да"
+    const yesButton = document.createElement('button');
+    yesButton.type = 'button';
+    yesButton.className = userAnswers[currentQuestionIndex] === 1 
+        ? 'py-3 px-8 bg-brand-primary text-white font-semibold rounded-lg shadow-md transform scale-105 transition-all' 
+        : 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
+    yesButton.textContent = 'Да';
     
-    const yesInput = document.createElement('input');
-    yesInput.type = 'radio';
-    yesInput.name = `question-${currentQuestionIndex}`;
-    yesInput.value = '1';
-    yesInput.className = 'mr-2 h-5 w-5 accent-brand-primary';
-    if (userAnswers[currentQuestionIndex] === 1) {
-        yesInput.checked = true;
-    }
-    
-    yesInput.onclick = function() {
-        let value = 1;
-        userAnswers[currentQuestionIndex] = value;
+    // Обработчик клика на кнопку "Да"
+    yesButton.onclick = function() {
+        // Визуально выделяем кнопку
+        yesButton.className = 'py-3 px-8 bg-brand-primary text-white font-semibold rounded-lg shadow-md transform scale-105 transition-all';
+        noButton.className = 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
+        
+        // Сохраняем ответ
+        userAnswers[currentQuestionIndex] = 1;
         
         // Задержка перед переходом к следующему вопросу или показу результата
         setTimeout(() => {
@@ -142,28 +168,22 @@ function renderCurrentQuestion() {
         }, 300);
     };
     
-    const yesText = document.createElement('span');
-    yesText.textContent = 'Да';
+    // Создаем кнопку "Нет"
+    const noButton = document.createElement('button');
+    noButton.type = 'button';
+    noButton.className = userAnswers[currentQuestionIndex] === 0 
+        ? 'py-3 px-8 bg-brand-primary text-white font-semibold rounded-lg shadow-md transform scale-105 transition-all' 
+        : 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
+    noButton.textContent = 'Нет';
     
-    yesLabel.appendChild(yesInput);
-    yesLabel.appendChild(yesText);
-    
-    // Создаем опцию "Нет"
-    const noLabel = document.createElement('label');
-    noLabel.className = 'flex items-center cursor-pointer';
-    
-    const noInput = document.createElement('input');
-    noInput.type = 'radio';
-    noInput.name = `question-${currentQuestionIndex}`;
-    noInput.value = '0';
-    noInput.className = 'mr-2 h-5 w-5 accent-brand-primary';
-    if (userAnswers[currentQuestionIndex] === 0) {
-        noInput.checked = true;
-    }
-    
-    noInput.onclick = function() {
-        let value = 0;
-        userAnswers[currentQuestionIndex] = value;
+    // Обработчик клика на кнопку "Нет"
+    noButton.onclick = function() {
+        // Визуально выделяем кнопку
+        noButton.className = 'py-3 px-8 bg-brand-primary text-white font-semibold rounded-lg shadow-md transform scale-105 transition-all';
+        yesButton.className = 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
+        
+        // Сохраняем ответ
+        userAnswers[currentQuestionIndex] = 0;
         
         // Задержка перед переходом к следующему вопросу или показу результата
         setTimeout(() => {
@@ -177,15 +197,9 @@ function renderCurrentQuestion() {
         }, 300);
     };
     
-    const noText = document.createElement('span');
-    noText.textContent = 'Нет';
-    
-    noLabel.appendChild(noInput);
-    noLabel.appendChild(noText);
-    
-    // Добавляем опции в контейнер
-    optionsDiv.appendChild(yesLabel);
-    optionsDiv.appendChild(noLabel);
+    // Добавляем кнопки в контейнер
+    optionsDiv.appendChild(yesButton);
+    optionsDiv.appendChild(noButton);
     questionDiv.appendChild(optionsDiv);
     
     // Очищаем и добавляем новый вопрос
@@ -242,15 +256,15 @@ function showTestResult() {
             interp => estimatedScore >= interp.min && estimatedScore <= interp.max
         );
         
-        // Отображаем результат с пометкой о неполном прохождении
-        scoreElement.textContent = `Результат: ${score} баллов (пройдено ${totalAnswered} из ${totalQuestions} вопросов)`;
+        // Отображаем результат - только количество баллов
+        scoreElement.textContent = `Результат: ${score} баллов`;
     } else {
         // Обычный расчет
         interpretation = currentTest.interpretations.find(
             interp => score >= interp.min && score <= interp.max
         );
         
-        // Отображаем результат
+        // Отображаем результат - только количество баллов
         scoreElement.textContent = `Результат: ${score} баллов`;
     }
 

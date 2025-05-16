@@ -69,51 +69,79 @@
     </style>
 </head>
 <body class="bg-gradient-brand min-h-screen text-brand-textDark p-4">
-    <div class="container mx-auto max-w-3xl pb-10">
+    <div class="container mx-auto max-w-4xl pb-10">
         <!-- Стартовый экран -->
         <div id="start-screen" class="screen active">
             <!-- Добавление логотипа -->
-            <div class="flex justify-center mb-6">
-                <img src="data:image/png;base64,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" alt="Leo Bot Logo" class="w-16 h-16">
-            </div>
-            <h1 class="text-4xl font-bold mb-2 text-brand-textPurple text-center">Leo_bot</h1>
+            
+            <h1 class="text-4xl font-bold mb-15 text-brand-textPurple text-center">Leo_bot</h1>
             
             <!-- Добавленное изображение tests.png -->
-            <div class="flex justify-center mb-4">
-                <img src="tests.png" alt="Тесты" class="w-48 h-48">
+            <div class="flex justify-center mt-5">
+                <img src="tests.png" alt="Тесты" class="w-72 h-72">
             </div>
             
             <p class="text-center mb-8 text-lg">Выберите тест, чтобы пройти</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Тест 1 -->
-                <div class="test-card bg-white/80 rounded-xl p-5 shadow-md cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1" data-test-id="1">
-                    <div class="text-3xl mb-3">📘</div>
-                    <h3 class="text-xl font-semibold mb-2 text-brand-textPurple">Тест на признаки созависимости</h3>
-                    <p>Проверяет границы, тревожность, контроль. Для вкладки «Для близких».</p>
+                <div class="test-card bg-white/90 rounded-xl p-6 shadow-md cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col h-full" data-test-id="1">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3 bg-blue-100 p-2 rounded-full w-12 h-12 flex items-center justify-center text-blue-500">📘</div>
+                        <h3 class="text-xl font-semibold text-brand-textPurple">Тест на признаки созависимости</h3>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-sm mb-2">Основан на подходах Мелоди Битти и современных исследованиях семейной динамики.</p>
+                        <p class="text-sm">Позволяет определить, насколько вы склонны терять контакт с собой в отношениях.</p>
+                    </div>
+                    <div class="mt-auto pt-3 border-t border-gray-100">
+                        <p class="text-sm italic text-brand-textPurple">→ Рекомендуется перед началом курса «Для близких».</p>
+                    </div>
                 </div>
                 
                 <!-- Тест 2 -->
-                <div class="test-card bg-white/80 rounded-xl p-5 shadow-md cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1" data-test-id="2">
-                    <div class="text-3xl mb-3">🔥</div>
-                    <h3 class="text-xl font-semibold mb-2 text-brand-textPurple">Опросник эмоционального выгорания</h3>
-                    <p>Усталость, деперсонализация, снижение эффективности. Подходит зависимым и близким.</p>
+                <div class="test-card bg-white/90 rounded-xl p-6 shadow-md cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col h-full" data-test-id="2">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3 bg-orange-100 p-2 rounded-full w-12 h-12 flex items-center justify-center text-orange-500">🔥</div>
+                        <h3 class="text-xl font-semibold text-brand-textPurple">Опросник эмоционального выгорания</h3>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-sm mb-2">Адаптация классического Maslach Burnout Inventory.</p>
+                        <p class="text-sm">Диагностирует три ключевых признака: эмоциональное истощение, отстранённость и снижение чувства эффективности.</p>
+                    </div>
+                    <div class="mt-auto pt-3 border-t border-gray-100">
+                        <p class="text-sm italic text-brand-textPurple">→ Тест поможет понять, насколько вам сейчас нужна перезагрузка и восстановление.</p>
+                    </div>
                 </div>
                 
                 <!-- Тест 3 -->
-                <div class="test-card bg-white/80 rounded-xl p-5 shadow-md cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1" data-test-id="3">
-                    <div class="text-3xl mb-3">😟</div>
-                    <h3 class="text-xl font-semibold mb-2 text-brand-textPurple">Тест на уровень тревожности</h3>
-                    <p>Шкала Спилбергера: тревожность как состояние и как черта личности.</p>
+                <div class="test-card bg-white/90 rounded-xl p-6 shadow-md cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col h-full" data-test-id="3">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3 bg-yellow-100 p-2 rounded-full w-12 h-12 flex items-center justify-center text-yellow-600">😟</div>
+                        <h3 class="text-xl font-semibold text-brand-textPurple">Тест на уровень тревожности</h3>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-sm mb-2">Основан на шкале Спилбергера (STAI).</p>
+                        <p class="text-sm">Измеряет два типа тревоги: реактивную (в ответ на события) и личностную (как устойчивую черту).</p>
+                    </div>
+                    <div class="mt-auto pt-3 border-t border-gray-100">
+                        <p class="text-sm italic text-brand-textPurple">→ Помогает увидеть, насколько тревожность управляет вами — и что с этим делать.</p>
+                    </div>
                 </div>
                 
-
-                
                 <!-- Тест 4 -->
-                <div class="test-card bg-white/80 rounded-xl p-5 shadow-md cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1" data-test-id="4">
-                    <div class="text-3xl mb-3">🛡️</div>
-                    <h3 class="text-xl font-semibold mb-2 text-brand-textPurple">Тест на устойчивость к стрессу</h3>
-                    <p>Оценивает стрессоустойчивость, эмоциональную опору и факторы перегрузки.</p>
+                <div class="test-card bg-white/90 rounded-xl p-6 shadow-md cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col h-full" data-test-id="4">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3 bg-cyan-100 p-2 rounded-full w-12 h-12 flex items-center justify-center text-cyan-600">🛡️</div>
+                        <h3 class="text-xl font-semibold text-brand-textPurple">Тест на устойчивость к стрессу</h3>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-sm mb-2">Основан на шкале Connor-Davidson Resilience Scale (CD-RISC).</p>
+                        <p class="text-sm">Оценивает способность адаптироваться к трудностям, восстанавливаться после кризиса, находить опору.</p>
+                    </div>
+                    <div class="mt-auto pt-3 border-t border-gray-100">
+                        <p class="text-sm italic text-brand-textPurple">→ Помогает понять, какие ресурсы уже есть, а какие важно развивать.</p>
+                    </div>
                 </div>
             </div>
         </div>
