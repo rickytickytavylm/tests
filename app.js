@@ -142,9 +142,7 @@ function renderCurrentQuestion() {
     // Создаем кнопку "Да"
     const yesButton = document.createElement('button');
     yesButton.type = 'button';
-    yesButton.className = userAnswers[currentQuestionIndex] === 1 
-        ? 'py-3 px-8 bg-brand-primary text-white font-semibold rounded-lg shadow-md transform scale-105 transition-all' 
-        : 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
+    yesButton.className = 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
     yesButton.textContent = 'Да';
     
     // Обработчик клика на кнопку "Да"
@@ -171,9 +169,7 @@ function renderCurrentQuestion() {
     // Создаем кнопку "Нет"
     const noButton = document.createElement('button');
     noButton.type = 'button';
-    noButton.className = userAnswers[currentQuestionIndex] === 0 
-        ? 'py-3 px-8 bg-brand-primary text-white font-semibold rounded-lg shadow-md transform scale-105 transition-all' 
-        : 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
+    noButton.className = 'py-3 px-8 bg-white hover:bg-brand-primary hover:text-white text-brand-textPurple font-semibold rounded-lg shadow-md transition-all';
     noButton.textContent = 'Нет';
     
     // Обработчик клика на кнопку "Нет"
